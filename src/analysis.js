@@ -27,7 +27,7 @@ module.exports = function(licenses, opt){
       'package': parseInt(14 * opt.width / 80),
       'License': parseInt(14 * opt.width / 80),
       'README': parseInt(14 * opt.width / 80)
-    }, { title: 'Packages (' + data.length + ')', repeat: 50, ...opt });
+    }, { title: 'Packages (' + data.length + ')', repeat: opt.border === 'markdown' ? Number.MAX_SAFE_INTEGER : 50, ...opt });
   }
 
 

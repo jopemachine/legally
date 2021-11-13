@@ -28,10 +28,12 @@ async function RunNow()
 
   try {
     options = clean(args);
-    console.log(
-      `Working on "${options.routes.join(", ") ||
-        "node_modules"}". It might take a while...`
-    );
+    if (options.border !== 'markdown') {
+      console.log(
+        `Working on "${options.routes.join(", ") ||
+          "node_modules"}". It might take a while...`
+      );
+    }
     folder = await remote(options.routes);
     licenses = await legally(folder);
     await analysis(licenses, options);

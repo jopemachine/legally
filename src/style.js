@@ -18,7 +18,12 @@ const styles = {
     ['+', '+', '+'],
     ['+', '+', '+'],
     ['+', '+', '+']
-  ], { h: '-', v: '|' })
+  ], { h: '-', v: '|' }),
+  markdown: Object.assign([
+    ['', '', ''],
+    ['', '', ''],
+    ['', '', ''],
+  ], { h: '-', v: '|'})
 };
 
 module.exports = border => styles[border] || styles.thin;

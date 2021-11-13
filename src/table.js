@@ -49,7 +49,11 @@ function header(columns, opt, repeat, nodisplay) {
   var topl = opt.title ? p[1][0] : p[0][0];
   var topr = opt.title ? p[1][2] : p[0][2];
   var topc = repeat ? p[1][1] : p[0][1];
-  log(topl + widths.map(col => p.h + strN(col, p.h) + p.h).join(topc) + topr);
+
+  if (opt.border !== 'markdown') {
+    log(topl + widths.map(col => p.h + strN(col, p.h) + p.h).join(topc) + topr);
+  }
+
   if (!nodisplay) {
     log(
       p.v +
@@ -58,11 +62,18 @@ function header(columns, opt, repeat, nodisplay) {
         " " +
         p.v
     );
-    log(
-      p[1][0] +
-        widths.map(col => p.h + strN(col, p.h) + p.h).join(p[1][1]) +
-        p[1][2]
-    );
+
+    if (opt.border !== 'markdown') {
+      log(
+        p[1][0] +
+          widths.map(col => p.h + strN(col, p.h) + p.h).join(p[1][1]) +
+          p[1][2]
+      );
+    } else {
+      log(
+        "|:---:".repeat(headers.length) + "|"
+      );
+    }
   }
 }
 
@@ -76,7 +87,7 @@ module.exports = function(data = [], columns = { "-": 76 }, opt = {}) {
 
   log("\n");
 
-  if (opt.title) {
+  if (opt.title && opt.border !== 'markdown') {
     title(opt.title, widths, opt);
   }
 
@@ -95,10 +106,13 @@ module.exports = function(data = [], columns = { "-": 76 }, opt = {}) {
     );
   });
 
-  log(
-    p[2][0] +
-      widths.map(col => p.h + strN(col, p.h) + p.h).join(p[2][1]) +
-      p[2][2]
-  );
+  if (opt.border !== 'markdown') {
+    log(
+      p[2][0] +
+        widths.map(col => p.h + strN(col, p.h) + p.h).join(p[2][1]) +
+        p[2][2]
+    );
+  }
+
   log("\n");
 };
