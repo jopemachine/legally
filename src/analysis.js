@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const table = require('./table');
 const normal = require('./normalize');
 
@@ -22,6 +23,11 @@ module.exports = function(licenses, opt){
   ]);
 
   if (opt.show.includes('packages')) {
+
+    if (opt.border === 'markdown') {
+      console.log('# Licensed packages');
+    }
+
     table(data, {
       'Module name': parseInt(25 * opt.width / 80),
       'package': parseInt(14 * opt.width / 80),
@@ -57,6 +63,11 @@ module.exports = function(licenses, opt){
     .map((lic, i, all) => [lic.name, lic.number, parseInt(lic.part * 100) ]);
 
   if (opt.show.includes('licenses')) {
+
+    if (opt.border === 'markdown') {
+      console.log('# License statistics');
+    }
+
     table(count, {
       License: parseInt(40 * opt.width / 80),
       Number: parseInt(12 * opt.width / 80),
@@ -71,6 +82,21 @@ module.exports = function(licenses, opt){
   var facts = [];
 
   var licensed = data.map(e => e.slice(1).join('')).filter(e => !/^\-+$/.test(e));
+
+  var unlicensedPackageData = _(data).filter(e => !/^\-+$/.test(e.slice(1).join('')) === false);
+
+  if (opt.show.includes('packages')) {
+    if (opt.border === 'markdown') {
+      console.log('# Unlicensed packages');
+    }
+
+    table(unlicensedPackageData, {
+      'Unlicensed module name': parseInt(25 * opt.width / 80),
+      'package': parseInt(14 * opt.width / 80),
+      'License': parseInt(14 * opt.width / 80),
+      'README': parseInt(14 * opt.width / 80)
+    }, { title: 'Unlicensed packages (' + unlicensedPackageData.length + ')', repeat: opt.border === 'markdown' ? Number.MAX_SAFE_INTEGER : 50, ...opt })
+  }
 
   if (licensed.length === data.length) {
     facts.push(['Great! All the dependencies are licensed']);
